@@ -61,3 +61,23 @@
     git=http://github.com/symfony/AsseticBundle.git
     target=/bundles/Symfony/Bundle/AsseticBundle
     version=v1.0.1
+    
+[Elastica]
+    git=http://github.com/ruflin/Elastica.git
+    target=elastica
+    
+[FOQElasticaBundle]
+    git=http://github.com/Exercise/FOQElasticaBundle.git
+    target=bundles/FOQ/ElasticaBundle
+    version=origin/2.0
+    
+[doctrine-mongodb]
+    git=http://github.com/doctrine/mongodb.git
+
+[doctrine-mongodb-odm]
+    git=http://github.com/doctrine/mongodb-odm.git
+
+[DoctrineMongoDBBundle]
+    git=http://github.com/symfony/DoctrineMongoDBBundle.git
+    target=/bundles/Symfony/Bundle/DoctrineMongoDBBundle
+    version=origin/2.0

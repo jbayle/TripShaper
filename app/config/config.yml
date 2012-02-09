@@ -48,6 +48,17 @@ doctrine:
         auto_generate_proxy_classes: %kernel.debug%
         auto_mapping: true
 
+doctrine_mongodb:
+    connections:
+        default:
+            server: mongodb://localhost:27017
+            options:
+                connect: true
+    default_database: test_database
+    document_managers:
+        default:
+            auto_mapping: true
+            
 # Swiftmailer Configuration
 swiftmailer:
     transport: %mailer_transport%
@@ -58,3 +69,18 @@ swiftmailer:
 jms_security_extra:
     secure_controllers:  true
     secure_all_services: false
+    
+    
+foq_elastica:
+    clients:
+        default: { host: localhost, port: 9200 }
+    indexes:
+        ileyeu:
+            client: default
+            types:
+                user:
+                    mappings:
+                        username: { boost: 5 }
+                        firstName: { boost: 3 }
+                        lastName: { boost: 3 }
+                        aboutMe:
