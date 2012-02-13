@@ -32,15 +32,19 @@ class TestCommand extends ContainerAwareCommand
         $config = array(
             'host' => 'localhost',
             'port' => '9200',
-            'transport' => 'http',
         );
         
         $client = new \Elastica_Client($config);
         $index = $client->getIndex("ileyeu");
-        //$index->delete();
+        $index->create(array(), true);
         
         //getType will create if one does not exist
-        $type = $index->getType('places');
+        $type = $index->getType('place');
+        
+        $mapping = new \Elastica_Type_Mapping($type, array(
+            'cat' => array ('type' => 'string', 'analyzer' => 'keyword' )
+        )); 
+        $type->setMapping($mapping);
         
         $cats = array(
           "copinage"=> array("laura", "marie", "alice"),
@@ -50,7 +54,7 @@ class TestCommand extends ContainerAwareCommand
         //Add a document with an id of 1
         // 8 secondes pour 10000 documents
         $docs = array();
-        for($i = 0 ; $i  < 10000 ; $i++)
+        for($i = 0 ; $i  < 1000 ; $i++)
         {
         $cat = array_keys($cats);
         $cat = $cat[rand(0, count($cat)-1)];
@@ -79,7 +83,7 @@ class TestCommand extends ContainerAwareCommand
               //"subcat" => $subcat,
               
               "tags" => array(
-                "accessibility" => array("disabled", "blind", ($i == 80 ? "toto2" : "testautre"), ($i == 90 ? "toto3" : "testautre") ),
+                "accessibility" => array("disabled", ($i == 10 ? "disabled" : "toto5"), "blind", ($i == 80 ? "toto2" : "testautre"), ($i == 90 ? "toto3" : "testautre") ),
                 "profile" => array("cspplus", "couple_jeune", "couple_avec_enfants"),
                 "interest" => array("architecture", "nature", "son_et_lumiere"),
                 "style" => array("free, romantics, ...")
@@ -154,8 +158,29 @@ class TestCommand extends ContainerAwareCommand
         
         $index->refresh(); 
         
-        $resultSet = $index->search("profile:cspplus +tags.accessibility:toto3");
+        $facet = new \Elastica_Facet_Terms('test');
+        $facet->setField('cat');
+
+        $query = new \Elastica_Query();
+        $query->addFacet($facet);
+        $query->setQuery(new \Elastica_Query_MatchAll());
+
+        $response = $type->search($query);
+        $facets = $response->getFacets();
+        echo var_export($facets);
+
+        $facet = new \Elastica_Facet_Terms('tags');
+        $facet->setField('tags.accessibility');
+
+        $query = new \Elastica_Query();
+        $query->addFacet($facet);
+        $query->setQuery(new \Elastica_Query_MatchAll());
+
+        $response = $type->search($query);
+        $facets = $response->getFacets();
+        echo var_export($facets);
         
+        $resultSet = $index->search("tags.accessibility:disabled", 5);
         echo var_export($resultSet, true);
         
         $output->writeln($text);
