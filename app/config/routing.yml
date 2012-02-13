@@ -1,3 +1,8 @@
+
+hello:
+    pattern:      /store/show/{id}
+    defaults:     { _controller: TripShaperStoreBundle:Default:show }
+
 TripShaperStoreBundle:
     resource: "@TripShaperStoreBundle/Controller/"
     type:     annotation

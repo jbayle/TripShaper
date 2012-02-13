@@ -58,6 +58,8 @@ doctrine_mongodb:
     document_managers:
         default:
             auto_mapping: true
+    auto_generate_hydrator_classes: true 
+    auto_generate_proxy_classes:  true
             
 # Swiftmailer Configuration
 swiftmailer:
