@@ -1,10 +1,10 @@
 imports:
-    - { resource: parameters.ini }
+    - { resource: parameters.yml }
     - { resource: security.yml }
 
 framework:
     #esi:             ~
-    #translator:      { fallback: %locale% }
+    translator:     ~
     secret:          %secret%
     charset:         UTF-8
     router:          { resource: "%kernel.root_dir%/config/routing.yml" }
@@ -12,8 +12,8 @@ framework:
     csrf_protection: true
     validation:      { enable_annotations: true }
     templating:      { engines: ['twig'] } #assets_version: SomeVersionScheme
+    default_locale: %locale%
     session:
-        default_locale: %locale%
         auto_start:     true
 
 # Twig Configuration
@@ -33,21 +33,7 @@ assetic:
         # yui_css:
         #     jar: %kernel.root_dir%/java/yuicompressor-2.4.2.jar
 
-# Doctrine Configuration
-doctrine:
-    dbal:
-        driver:   %database_driver%
-        host:     %database_host%
-        port:     %database_port%
-        dbname:   %database_name%
-        user:     %database_user%
-        password: %database_password%
-        charset:  UTF8
-
-    orm:
-        auto_generate_proxy_classes: %kernel.debug%
-        auto_mapping: true
-
+# Doctrine MongoDB
 doctrine_mongodb:
     connections:
         default:
@@ -62,17 +48,19 @@ doctrine_mongodb:
     auto_generate_proxy_classes:  true
             
 # Swiftmailer Configuration
-swiftmailer:
-    transport: %mailer_transport%
-    host:      %mailer_host%
-    username:  %mailer_user%
-    password:  %mailer_password%
+# swiftmailer:
+#    transport: %mailer_transport%
+#    host:      %mailer_host%
+#    username:  %mailer_user%
+#    password:  %mailer_password%
 
+# JMS
 jms_security_extra:
-    secure_controllers:  true
-    secure_all_services: false
-    
-    
+#    secure_controllers:  true
+#    secure_all_services: false
+     expressions: true
+   
+# Elastica
 foq_elastica:
     clients:
         default: { host: localhost, port: 9200 }
@@ -86,3 +74,25 @@ foq_elastica:
                         firstName: { boost: 3 }
                         lastName: { boost: 3 }
                         aboutMe:
+  
+# Menu
+knp_menu:
+    twig: true
+    
+# Admin Generator
+admingenerator_generator:
+    base_admin_template: AdmingeneratorGeneratorBundle::base_admin_assetic_less.html.twig
+    knp_menu_class: TripShaper\AdminBundle\Menu\AdminMenu
+    use_doctrine_orm: false
+    use_doctrine_odm: true
+    use_propel: false
+admingenerator_user:
+    login_template: AdmingeneratorGeneratorBundle::base_login_assetic_less.html.twig
+
+# FOS User
+fos_user:
+    service:
+        mailer: fos_user.mailer.noop
+    user_class:  TripShaper\AdminBundle\Document\User 
+    db_driver: mongodb
+    firewall_name: main

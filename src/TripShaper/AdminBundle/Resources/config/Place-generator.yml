@@ -1,0 +1,33 @@
+generator: admingenerator.generator.doctrine_odm
+params:
+  model: TripShaper\StoreBundle\Document\Place
+  namespace_prefix: TripShaper
+  bundle_name: AdminBundle
+  fields: ~
+
+builders:
+  list:
+    params:
+      title: List of Places
+      display: [ title ]
+      actions:
+        new: ~
+      object_actions:
+        edit: ~
+        delete: ~
+  filters:
+    params:
+      display: [ title ]
+  new:
+    params:
+      title: New Place
+      display: ~
+      actions:
+        list: ~
+  edit:
+    params:
+      title: You're editing the object "{{ Place.title }}"
+      display: ~
+      actions:
+        list: ~
+  delete: ~

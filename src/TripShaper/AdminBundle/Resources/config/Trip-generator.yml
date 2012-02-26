@@ -1,0 +1,33 @@
+generator: admingenerator.generator.doctrine_odm
+params:
+  model: TripShaper\StoreBundle\Document\Trip
+  namespace_prefix: TripShaper
+  bundle_name: AdminBundle
+  fields: ~
+
+builders:
+  list:
+    params:
+      title: List of Trips
+      display: ~
+      actions:
+        new: ~
+      object_actions:
+        edit: ~
+        delete: ~
+  filters:
+    params:
+      display: ~
+  new:
+    params:
+      title: New object for AdminBundle
+      display: ~
+      actions:
+        list: ~
+  edit:
+    params:
+      title: You're editing the object "{{ Trip.title }}"
+      display: ~
+      actions:
+        list: ~
+  delete: ~

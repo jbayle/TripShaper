@@ -5,8 +5,10 @@ namespace TripShaper\StoreBundle\Controller;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
-use TripShaper\StoreBundle\Document\Resource;
 use Symfony\Component\HttpFoundation\Response;
+use TripShaper\StoreBundle\Document\Resource;
+use TripShaper\StoreBundle\Document\Tag;
+
 
 class DefaultController extends Controller
 {
@@ -27,6 +29,10 @@ class DefaultController extends Controller
 	{
 		$resource = new Resource();
 		$resource->setTitle('Resource ONE');
+
+		$tag = new Tag();
+		$tag->setTerm("culture");
+		$resource->addTags($tag);
 
 		$dm = $this->get('doctrine.odm.mongodb.document_manager');
 		$dm->persist($resource);
@@ -49,6 +55,6 @@ class DefaultController extends Controller
 			throw $this->createNotFoundException('No resource found for id '.$id);
 		}
 
-		return new Response($resource->getTitle());
+		return new Response($resource->getTags());
 	}
 }
