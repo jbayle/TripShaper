@@ -2,100 +2,119 @@
 
 namespace TripShaper\DataImporterBundle\Command;
 
+use TripShaper\DataImporterBundle\SearchEngine\SearchService;
 use Symfony\Bundle\FrameworkBundle\Command\ContainerAwareCommand;
 use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;
 
-
 class TestCommand extends ContainerAwareCommand
 {
     protected function configure()
     {
         $this
-            ->setName('tripshaper:test')
+            ->setName('tripshaper:load')
             ->setDescription('Load test data into Elastic Search')
             ->addArgument('records_count', InputArgument::OPTIONAL, 'How many records to generate ?')
         ;
     }
 
+    private function generateTags($minTag, $maxTags, $proposedTags)
+    {
+        // Some validations before starting
+        if(count($proposedTags) < $maxTags)
+            throw new Exception("maxTags should be lower than proposed tags list size");
+        if($minTag < 0)
+            throw new Exception("minTag should be positive");
+
+        $tags = array();
+        $tagNumber = rand($minTag, $maxTags);
+        $notUsedTags = $proposedTags;
+        for ($i = 0 ; $i < $tagNumber ; $i++)
+        {
+            shuffle($notUsedTags);
+            $tags += array_fill(0,max(1, rand(-2,3)), array_pop($notUsedTags));
+        }
+        return $tags;
+    }
+
     protected function execute(InputInterface $input, OutputInterface $output)
     {
         $records_count = $input->getArgument('records_count');
-        if ($records_count) {
-            $text = 'Hello '.$records_count;
-        } else {
-            $text = 'Hello';
-        }
-        
-        $config = array(
-            'host' => 'localhost',
-            'port' => '9200',
-        );
-        
-        $client = new \Elastica_Client($config);
-        $index = $client->getIndex("ileyeu");
+        if (!$records_count)
+            $records_count = 1000;
+
+        $service = new SearchService();
+        $index = $service->getIndex("ileyeu");
+        // delete and create the index
         $index->create(array(), true);
         
-        //getType will create if one does not exist
+        // getType will create if one does not exist
         $type = $index->getType('place');
         
+        // special mapping for "cat" field
         $mapping = new \Elastica_Type_Mapping($type, array(
             'cat' => array ('type' => 'string', 'analyzer' => 'keyword' )
         )); 
         $type->setMapping($mapping);
         
+        // tags lists for the generator
+        $accessibility_tags = array('disabled', 'blind');
+        $profil_tags = array('cspplus', 'sportif', 'couple_enfant', 'couple_adolescent');
+        $interest_tags = array("architecture", "nature", "son_et_lumiere");
+
+        // cats and subcat lists for the generator
         $cats = array(
-          "copinage"=> array("laura", "marie", "alice"),
-          "joli_coeur" => array("cloney", "dujardin", "pit"),
-          "another cat" => array("c'est si beau", "loin de toi", "comme moi"),
+          "phare et legendes" => array("phare", "legende"),
+          "histoire" => array("pre-histoire", "contemporain", "revolution française"),
           );
-        //Add a document with an id of 1
-        // 8 secondes pour 10000 documents
-        $docs = array();
-        for($i = 0 ; $i  < 1000 ; $i++)
-        {
-        $cat = array_keys($cats);
-        $cat = $cat[rand(0, count($cat)-1)];
-        $subcat = $cats[$cat][rand(0,2)];
         
-        $docs[] = new \Elastica_Document($i, 
+        // bounding box for position generator
+        $min_lat = 47.201843;
+        $max_lat = 47.251737;
+        
+        $max_lon = -1.460495;
+        $min_lon = -1.638336; 
+        
+        $docs = array();
+        for($i = 0 ; $i  < $records_count ; $i++)
+        {
+            $cat = array_keys($cats);
+            $cat = $cat[rand(0, count($cat)-1)];
+            $subcat = $cats[$cat][rand(0,count($cats[$cat])-1)];
+
+            $lon = $min_lon + ($max_lon-$min_lon) * (mt_rand() / mt_getrandmax());
+            $lat = $min_lat + ($max_lat-$min_lat) * (mt_rand() / mt_getrandmax());
+
+            $docs[] = new \Elastica_Document($i, 
             array(
-              "title2" => "test",
+              "title" => "test",
               "short_description" => "Un simple test",
               "image" => "URL",
               
-              "external_data" => array(
+              /*"external_data" => array(
                 "title" => "une autre titre",
-                "description" => "une autre description"
-              ),
-            
-              "statistics" => array(
-                "age_function" => "polynome qui approxime l'intéret en fonction de l'âge",
-                "month_function" => "polynome qui approxime l'intéret en fonction du mois de l'année",
-                "weather_function" => "polynome qui approxime l'intéret en fonction du mois de la meteo suivant le vent, l'état du ciel, la pluie",
                 "best_hours" => "polynome qui approxime l'intérêt en fonction de l'heure de la journée et la journée de l'année 1 WE, ...",
                 "another_idea" => "stats à la mode awstats",
-              ),
+              ),*/
               
               "cat" => $cat,
-              //"subcat" => $subcat,
+              "subcat" => $subcat,
               
               "tags" => array(
-                "accessibility" => array("disabled", ($i == 10 ? "disabled" : "toto5"), "blind", ($i == 80 ? "toto2" : "testautre"), ($i == 90 ? "toto3" : "testautre") ),
-                "profile" => array("cspplus", "couple_jeune", "couple_avec_enfants"),
-                "interest" => array("architecture", "nature", "son_et_lumiere"),
-                "style" => array("free, romantics, ...")
+                "accessibility" => $this->generateTags(0,1, $accessibility_tags),
+                "profile" => $this->generateTags(1,3, $profil_tags), 
+                "interest" => $this->generateTags(1,2, $interest_tags),
               ),
-              // accepter le social tagguing (workflow par ailleur)
               
               "price_from" => 0,
               "price_to" => 10,
               
+                // this element is geo-enabled since it has lat and lon properties
               "location" => array(
-                "lat" => "47.174778",
-                "lon" => "-1.230469",
+                "lat" => $lat,
+                "lon" => $lon,
                 "adress" => "la campagne",
                 "city" => "vallet",
                 "postcode" => "44330"
@@ -154,36 +173,39 @@ class TestCommand extends ContainerAwareCommand
         
         
         }
+        
+        
         $type->addDocuments($docs);
         
         $index->refresh(); 
         
-        $facet = new \Elastica_Facet_Terms('test');
+        /*$facet = new \Elastica_Facet_Terms('cat');
         $facet->setField('cat');
-
         $query = new \Elastica_Query();
         $query->addFacet($facet);
         $query->setQuery(new \Elastica_Query_MatchAll());
-
         $response = $type->search($query);
         $facets = $response->getFacets();
-        echo var_export($facets);
+        $output->writeln(var_export($facets));
 
         $facet = new \Elastica_Facet_Terms('tags');
         $facet->setField('tags.accessibility');
-
         $query = new \Elastica_Query();
         $query->addFacet($facet);
         $query->setQuery(new \Elastica_Query_MatchAll());
-
         $response = $type->search($query);
         $facets = $response->getFacets();
-        echo var_export($facets);
+        $facet = new \Elastica_Facet_Terms('tags');
+        $facet->setField('tags.accessibility');
+        $query = new \Elastica_Query();
+        $query->addFacet($facet);
+        $query->setQuery(new \Elastica_Query_MatchAll());
+        $response = $type->search($query);
+        $facets = $response->getFacets();
+        $output->writeln(var_export($facets));*/
         
-        $resultSet = $index->search("tags.accessibility:disabled", 5);
-        echo var_export($resultSet, true);
-        
-        $output->writeln($text);
+        $resultSet = $index->search("tags.accessibility:disabled", 2);
+        $output->writeln(var_export($resultSet, true));
     }
 }
 
