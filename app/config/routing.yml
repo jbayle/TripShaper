@@ -1,7 +1,66 @@
+
+_dashboard:
+    pattern:  /
+    defaults: { _controller: TripShaperAdminBundle:Place/List:index }
+
+TripShaperAdminBundle_admin_trip_shaper_admin_bundle_path:
+    resource: "@TripShaperAdminBundle/Controller/Path/"
+    type:     admingenerator
+    prefix:   /admin/paths
+
+TripShaperAdminBundle_admin_trip_shaper_admin_bundle_map:
+    resource: "@TripShaperAdminBundle/Controller/Map/"
+    type:     admingenerator
+    prefix:   /admin/maps
+
+TripShaperAdminBundle_admin_trip_shaper_admin_bundle_resource:
+    resource: "@TripShaperAdminBundle/Controller/Resource/"
+    type:     admingenerator
+    prefix:   /admin/resources
+
+TripShaperAdminBundle_admin_trip_shaper_admin_bundle_place:
+    resource: "@TripShaperAdminBundle/Controller/Place/"
+    type:     admingenerator
+    prefix:   /admin/places
+
+TripShaperAdminBundle_admin_trip_shaper_admin_bundle_trip:
+    resource: "@TripShaperAdminBundle/Controller/Trip/"
+    type:     admingenerator
+    prefix:   /admin/trips
+
+hello:
+    pattern:      /store/show/{id}
+    defaults:     { _controller: TripShaperStoreBundle:Default:show }
+
+TripShaperStoreBundle:
+    resource: "@TripShaperStoreBundle/Controller/"
+    type:     annotation
+    prefix:   /
+
 TripShaperDataImporterBundle:
     resource: "@TripShaperDataImporterBundle/Controller/"
     type:     annotation
     prefix:   /
+
+_assetic:
+    resource: .
+    type: assetic
+
+## FOS User
+fos_user_security:
+    resource: "@FOSUserBundle/Resources/config/routing/security.xml"
+
+fos_user_profile:
+    resource: "@FOSUserBundle/Resources/config/routing/profile.xml"
+    prefix: /profile
+
+fos_user_register:
+    resource: "@FOSUserBundle/Resources/config/routing/registration.xml"
+    prefix: /register
+
+fos_user_resetting:
+    resource: "@FOSUserBundle/Resources/config/routing/resetting.xml"
+    prefix: /resetting
 
 # Internal routing configuration to handle ESI
 #_internal:
