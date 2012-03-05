@@ -3,12 +3,23 @@ params:
   model: TripShaper\StoreBundle\Document\Place
   namespace_prefix: TripShaper
   bundle_name: AdminBundle
-  fields: ~
+  fields:
+    title:
+        getter: DefaultTitle
+    shortDescription:
+        formType: textarea
+        label: Short description
+    localDescription:   
+        formType: textarea
+        label: Local description
+    marketingDescription: 
+        formType: textarea  
+        label: Marketing description
 
 builders:
   list:
     params:
-      title: List of Places
+      title: Places
       display: [ title ]
       actions:
         new: ~
@@ -17,17 +28,25 @@ builders:
         delete: ~
   filters:
     params:
-      display: [ title ]
+      display: [ ]
   new:
     params:
       title: New Place
-      display: ~
+      display: 
+        "NONE": [ id ]
+        "Titles": []
+        "Descriptions": [ shortDescription, localDescription, marketingDescription  ]
+        "Tags": []
       actions:
         list: ~
   edit:
     params:
-      title: You're editing the object "{{ Place.title }}"
-      display: ~
+      title: "{{ Place.id }}"
+      display: 
+        "NONE": [ id ]
+        "Titles": []
+        "Descriptions": [ shortDescription, localDescription, marketingDescription  ]
+        "Tags": []
       actions:
         list: ~
   delete: ~

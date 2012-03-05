@@ -25,6 +25,7 @@ class LocalizedString
 	 */
 	private $value;
 
+	// ----------------------- GENERATED ---------------------------- //
 
     /**
      * Get id

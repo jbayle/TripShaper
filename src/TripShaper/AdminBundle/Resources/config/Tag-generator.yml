@@ -1,0 +1,33 @@
+generator: admingenerator.generator.doctrine_odm
+params:
+  model: TripShaper\StoreBundle\Document\Tag
+  namespace_prefix: TripShaper
+  bundle_name: AdminBundle
+  fields: ~
+
+builders:
+  list:
+    params:
+      title: Tags
+      display: ~
+      actions:
+        new: ~
+      object_actions:
+        edit: ~
+        delete: ~
+  filters:
+    params:
+      display: ~
+  new:
+    params:
+      title: New Tag
+      display: [ term ]
+      actions:
+        list: ~
+  edit:
+    params:
+      title: "{{ Tag.term }}"
+      display: [ term ]
+      actions:
+        list: ~
+  delete: ~

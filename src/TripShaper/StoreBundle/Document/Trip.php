@@ -15,9 +15,9 @@ class Trip
 	private $id;
 
 	/**
-	 * @MongoDB\EmbedOne(targetDocument="LocalizedString")
+	 * @MongoDB\EmbedMany(targetDocument="LocalizedString")
 	 */
-	private $title;
+	private $titles;
 
 	/**
 	 * @MongoDB\String
@@ -44,118 +44,81 @@ class Trip
 	 */
 	private $comments = array();
 
-	/**
-	 * Get id
-	 *
-	 * @return id $id
-	 */
-	public function getId()
-	{
-		return $this->id;
-	}
+	// ----------------------- GENERATED ---------------------------- //
 
-	/**
-	 * Set title
-	 *
-	 * @param string $title
-	 */
-	public function setTitle($title)
-	{
-		$this->title = $title;
-	}
-
-	/**
-	 * Get title
-	 *
-	 * @return string $title
-	 */
-	public function getTitle()
-	{
-		return $this->title;
-	}
-
-	/**
-	 * Set description
-	 *
-	 * @param string $description
-	 */
-	public function setDescription($description)
-	{
-		$this->description = $description;
-	}
-
-	/**
-	 * Get description
-	 *
-	 * @return string $description
-	 */
-	public function getDescription()
-	{
-		return $this->description;
-	}
-
-	/**
-	 * Set icon
-	 *
-	 * @param file $icon
-	 */
-	public function setIcon($icon)
-	{
-		$this->icon = $icon;
-	}
-
-	/**
-	 * Get icon
-	 *
-	 * @return file $icon
-	 */
-	public function getIcon()
-	{
-		return $this->icon;
-	}
-
-	/**
-	 * Set splash
-	 *
-	 * @param file $splash
-	 */
-	public function setSplash($splash)
-	{
-		$this->splash = $splash;
-	}
-
-	/**
-	 * Get splash
-	 *
-	 * @return file $splash
-	 */
-	public function getSplash()
-	{
-		return $this->splash;
-	}
-
-	/**
-	 * Set date
-	 *
-	 * @param date $date
-	 */
-	public function setDate($date)
-	{
-		$this->date = $date;
-	}
-
-	/**
-	 * Get date
-	 *
-	 * @return date $date
-	 */
-	public function getDate()
-	{
-		return $this->date;
-	}
     public function __construct()
     {
         $this->comments = new \Doctrine\Common\Collections\ArrayCollection();
+    }
+
+    /**
+     * Get id
+     *
+     * @return id $id
+     */
+    public function getId()
+    {
+        return $this->id;
+    }
+
+    /**
+     * Set title
+     *
+     * @param TripShaper\StoreBundle\Document\LocalizedString $title
+     */
+    public function setTitle(\TripShaper\StoreBundle\Document\LocalizedString $title)
+    {
+        $this->title = $title;
+    }
+
+    /**
+     * Get title
+     *
+     * @return TripShaper\StoreBundle\Document\LocalizedString $title
+     */
+    public function getTitle()
+    {
+        return $this->title;
+    }
+
+    /**
+     * Set description
+     *
+     * @param string $description
+     */
+    public function setDescription($description)
+    {
+        $this->description = $description;
+    }
+
+    /**
+     * Get description
+     *
+     * @return string $description
+     */
+    public function getDescription()
+    {
+        return $this->description;
+    }
+
+    /**
+     * Set date
+     *
+     * @param date $date
+     */
+    public function setDate($date)
+    {
+        $this->date = $date;
+    }
+
+    /**
+     * Get date
+     *
+     * @return date $date
+     */
+    public function getDate()
+    {
+        return $this->date;
     }
 
     /**
@@ -176,5 +139,25 @@ class Trip
     public function getComments()
     {
         return $this->comments;
+    }
+
+    /**
+     * Add titles
+     *
+     * @param TripShaper\StoreBundle\Document\LocalizedString $titles
+     */
+    public function addTitles(\TripShaper\StoreBundle\Document\LocalizedString $titles)
+    {
+        $this->titles[] = $titles;
+    }
+
+    /**
+     * Get titles
+     *
+     * @return Doctrine\Common\Collections\Collection $titles
+     */
+    public function getTitles()
+    {
+        return $this->titles;
     }
 }

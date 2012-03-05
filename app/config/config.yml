@@ -68,12 +68,24 @@ foq_elastica:
         ileyeu:
             client: default
             types:
-                user:
+#                place:
+#                    mappings:
+#                        title:
+#                    persistence:
+#                        driver: mongodb
+#                        model: TripShaper\StoreBundle\Document\Place
+#                        provider:
+#                        listener:
+#                        finder:
+                tag:
                     mappings:
-                        username: { boost: 5 }
-                        firstName: { boost: 3 }
-                        lastName: { boost: 3 }
-                        aboutMe:
+                        term:
+                    persistence:
+                        driver: mongodb
+                        model: TripShaper\StoreBundle\Document\Tag
+                        provider:
+                        listener:
+                        finder:
   
 # Menu
 knp_menu:
@@ -81,7 +93,7 @@ knp_menu:
     
 # Admin Generator
 admingenerator_generator:
-    base_admin_template: AdmingeneratorGeneratorBundle::base_admin_assetic_less.html.twig
+    base_admin_template: TripShaperAdminBundle::base_admin_assetic_less.html.twig
     knp_menu_class: TripShaper\AdminBundle\Menu\AdminMenu
     use_doctrine_orm: false
     use_doctrine_odm: true
@@ -96,3 +108,5 @@ fos_user:
     user_class:  TripShaper\AdminBundle\Document\User 
     db_driver: mongodb
     firewall_name: main
+            
+    

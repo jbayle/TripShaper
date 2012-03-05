@@ -16,9 +16,23 @@ class Tag
 
 	/**
 	 * @MongoDB\String
+	 * @MongoDB\UniqueIndex()
 	 */
 	private $term;
 
+	// ------------------------- METHODS ------------------------------ //
+
+	/**
+	 * __toString
+	 *
+	 * @return string $term
+	 */
+	public function __toString()
+	{
+		return $this->term;
+	}
+
+	// ----------------------- GENERATED ---------------------------- //
 
     /**
      * Get id

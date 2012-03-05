@@ -17,30 +17,30 @@ class Place
 	/**
 	 * @MongoDB\Boolean
 	 */
-	private $is_published;
+	private $isPublished;
 
 	/**
 	 * @MongoDB\Boolean
 	 */
-	private $is_connector;
+	private $isConnector;
 
 	/**
-	 * @MongoDB\String
+	 * @MongoDB\EmbedMany(targetDocument="LocalizedString")
 	 */
-	private $title;
+	private $titles;
 
 	/**
-	 * @MongoDB\String
+	 * @MongoDB\String(nullable="true")
 	 */
 	private $shortDescription;
 
 	/**
-	 * @MongoDB\String
+	 * @MongoDB\String(nullable="true")
 	 */
 	private $localDescription;
 
 	/**
-	 * @MongoDB\String
+	 * @MongoDB\String(nullable="true")
 	 */
 	private $marketingDescription;
 
@@ -55,17 +55,17 @@ class Place
 	private $subtype;
 
 	/**
-	 * @MongoDB\String
+	 * @MongoDB\String(nullable="true")
 	 */
 	private $author;
 
 	/**
-	 * @MongoDB\EmbedOne(targetDocument="Geolocation")
+	 * @MongoDB\EmbedOne(targetDocument="Geolocation", nullable="true")
 	 */
 	private $location;
 
 	/**
-	 * @MongoDB\Float
+	 * @MongoDB\Float(nullable="true")
 	 */
 	private $elevation;
 
@@ -99,417 +99,334 @@ class Place
 	 */
 	private $tags = array();
 
-	/**
-	 * Get id
-	 *
-	 * @return id $id
-	 */
-	public function getId()
-	{
-		return $this->id;
-	}
+	// ------------------------- METHODS ------------------------------ //
 
 	/**
-	 * Set title
-	 *
-	 * @param string $title
+	 * Get default title
 	 */
-	public function setTitle($title)
+	public function getDefaultTitle()
 	{
-		$this->title = $title;
+		if ($this->getTitles()->count() == 0) return null;
+	 	return  $this->getTitles()->get(0)->getValue();
 	}
 
-	/**
-	 * Get title
-	 *
-	 * @return string $title
-	 */
-	public function getTitle()
-	{
-		return $this->title;
-	}
+	// ----------------------- GENERATED ---------------------------- //
 
-	/**
-	 * Set is_published
-	 *
-	 * @param boolean $isPublished
-	 */
-	public function setIsPublished($isPublished)
-	{
-		$this->is_published = $isPublished;
-	}
+    public function __construct()
+    {
+        $this->titles = new \Doctrine\Common\Collections\ArrayCollection();
+        $this->activationZone = new \Doctrine\Common\Collections\ArrayCollection();
+        $this->atmosphereZone = new \Doctrine\Common\Collections\ArrayCollection();
+        $this->tags = new \Doctrine\Common\Collections\ArrayCollection();
+    }
 
-	/**
-	 * Get is_published
-	 *
-	 * @return boolean $isPublished
-	 */
-	public function getIsPublished()
-	{
-		return $this->is_published;
-	}
+    /**
+     * Get id
+     *
+     * @return id $id
+     */
+    public function getId()
+    {
+        return $this->id;
+    }
 
-	/**
-	 * Set is_connector
-	 *
-	 * @param boolean $isConnector
-	 */
-	public function setIsConnector($isConnector)
-	{
-		$this->is_connector = $isConnector;
-	}
+    /**
+     * Set isPublished
+     *
+     * @param boolean $isPublished
+     */
+    public function setIsPublished($isPublished)
+    {
+        $this->isPublished = $isPublished;
+    }
 
-	/**
-	 * Get is_connector
-	 *
-	 * @return boolean $isConnector
-	 */
-	public function getIsConnector()
-	{
-		return $this->is_connector;
-	}
+    /**
+     * Get isPublished
+     *
+     * @return boolean $isPublished
+     */
+    public function getIsPublished()
+    {
+        return $this->isPublished;
+    }
 
-	/**
-	 * Set latitude
-	 *
-	 * @param string $latitude
-	 */
-	public function setLatitude($latitude)
-	{
-		$this->latitude = $latitude;
-	}
+    /**
+     * Set isConnector
+     *
+     * @param boolean $isConnector
+     */
+    public function setIsConnector($isConnector)
+    {
+        $this->isConnector = $isConnector;
+    }
 
-	/**
-	 * Get latitude
-	 *
-	 * @return string $latitude
-	 */
-	public function getLatitude()
-	{
-		return $this->latitude;
-	}
+    /**
+     * Get isConnector
+     *
+     * @return boolean $isConnector
+     */
+    public function getIsConnector()
+    {
+        return $this->isConnector;
+    }
 
-	/**
-	 * Set longitude
-	 *
-	 * @param string $longitude
-	 */
-	public function setLongitude($longitude)
-	{
-		$this->longitude = $longitude;
-	}
+    /**
+     * Add titles
+     *
+     * @param TripShaper\StoreBundle\Document\LocalizedString $titles
+     */
+    public function addTitles(\TripShaper\StoreBundle\Document\LocalizedString $titles)
+    {
+        $this->titles[] = $titles;
+    }
 
-	/**
-	 * Get longitude
-	 *
-	 * @return string $longitude
-	 */
-	public function getLongitude()
-	{
-		return $this->longitude;
-	}
+    /**
+     * Get titles
+     *
+     * @return Doctrine\Common\Collections\Collection $titles
+     */
+    public function getTitles()
+    {
+        return $this->titles;
+    }
 
-	/**
-	 * Set elevation
-	 *
-	 * @param string $elevation
-	 */
-	public function setElevation($elevation)
-	{
-		$this->elevation = $elevation;
-	}
+    /**
+     * Set shortDescription
+     *
+     * @param string $shortDescription
+     */
+    public function setShortDescription($shortDescription)
+    {
+        $this->shortDescription = $shortDescription;
+    }
 
-	/**
-	 * Get elevation
-	 *
-	 * @return string $elevation
-	 */
-	public function getElevation()
-	{
-		return $this->elevation;
-	}
+    /**
+     * Get shortDescription
+     *
+     * @return string $shortDescription
+     */
+    public function getShortDescription()
+    {
+        return $this->shortDescription;
+    }
 
-	/**
-	 * Set level
-	 *
-	 * @param string $level
-	 */
-	public function setLevel($level)
-	{
-		$this->level = $level;
-	}
+    /**
+     * Set localDescription
+     *
+     * @param string $localDescription
+     */
+    public function setLocalDescription($localDescription)
+    {
+        $this->localDescription = $localDescription;
+    }
 
-	/**
-	 * Get level
-	 *
-	 * @return string $level
-	 */
-	public function getLevel()
-	{
-		return $this->level;
-	}
-	public function __construct()
-	{
-		$this->tags = new \Doctrine\Common\Collections\ArrayCollection();
-	}
+    /**
+     * Get localDescription
+     *
+     * @return string $localDescription
+     */
+    public function getLocalDescription()
+    {
+        return $this->localDescription;
+    }
 
-	/**
-	 * Add tags
-	 *
-	 * @param TripShaper\StoreBundle\Document\Tag $tags
-	 */
-	public function addTags(\TripShaper\StoreBundle\Document\Tag $tags)
-	{
-		$this->tags[] = $tags;
-	}
+    /**
+     * Set marketingDescription
+     *
+     * @param string $marketingDescription
+     */
+    public function setMarketingDescription($marketingDescription)
+    {
+        $this->marketingDescription = $marketingDescription;
+    }
 
-	/**
-	 * Get tags
-	 *
-	 * @return Doctrine\Common\Collections\Collection $tags
-	 */
-	public function getTags()
-	{
-		return $this->tags;
-	}
+    /**
+     * Get marketingDescription
+     *
+     * @return string $marketingDescription
+     */
+    public function getMarketingDescription()
+    {
+        return $this->marketingDescription;
+    }
 
-	/**
-	 * Set location
-	 *
-	 * @param TripShaper\StoreBundle\Document\Geolocation $location
-	 */
-	public function setLocation(\TripShaper\StoreBundle\Document\Geolocation $location)
-	{
-		$this->location = $location;
-	}
+    /**
+     * Set type
+     *
+     * @param string $type
+     */
+    public function setType($type)
+    {
+        $this->type = $type;
+    }
 
-	/**
-	 * Get location
-	 *
-	 * @return TripShaper\StoreBundle\Document\Geolocation $location
-	 */
-	public function getLocation()
-	{
-		return $this->location;
-	}
+    /**
+     * Get type
+     *
+     * @return string $type
+     */
+    public function getType()
+    {
+        return $this->type;
+    }
 
-	/**
-	 * Set localDescription
-	 *
-	 * @param string $localDescription
-	 */
-	public function setLocalDescription($localDescription)
-	{
-		$this->localDescription = $localDescription;
-	}
+    /**
+     * Set subtype
+     *
+     * @param string $subtype
+     */
+    public function setSubtype($subtype)
+    {
+        $this->subtype = $subtype;
+    }
 
-	/**
-	 * Get localDescription
-	 *
-	 * @return string $localDescription
-	 */
-	public function getLocalDescription()
-	{
-		return $this->localDescription;
-	}
+    /**
+     * Get subtype
+     *
+     * @return string $subtype
+     */
+    public function getSubtype()
+    {
+        return $this->subtype;
+    }
 
-	/**
-	 * Set marketingDescription
-	 *
-	 * @param string $marketingDescription
-	 */
-	public function setMarketingDescription($marketingDescription)
-	{
-		$this->marketingDescription = $marketingDescription;
-	}
+    /**
+     * Set author
+     *
+     * @param string $author
+     */
+    public function setAuthor($author)
+    {
+        $this->author = $author;
+    }
 
-	/**
-	 * Get marketingDescription
-	 *
-	 * @return string $marketingDescription
-	 */
-	public function getMarketingDescription()
-	{
-		return $this->marketingDescription;
-	}
+    /**
+     * Get author
+     *
+     * @return string $author
+     */
+    public function getAuthor()
+    {
+        return $this->author;
+    }
 
-	/**
-	 * Set representationIcon
-	 *
-	 * @param file $representationIcon
-	 */
-	public function setRepresentationIcon($representationIcon)
-	{
-		$this->representationIcon = $representationIcon;
-	}
+    /**
+     * Set location
+     *
+     * @param TripShaper\StoreBundle\Document\Geolocation $location
+     */
+    public function setLocation(\TripShaper\StoreBundle\Document\Geolocation $location)
+    {
+        $this->location = $location;
+    }
 
-	/**
-	 * Get representationIcon
-	 *
-	 * @return file $representationIcon
-	 */
-	public function getRepresentationIcon()
-	{
-		return $this->representationIcon;
-	}
+    /**
+     * Get location
+     *
+     * @return TripShaper\StoreBundle\Document\Geolocation $location
+     */
+    public function getLocation()
+    {
+        return $this->location;
+    }
 
-	/**
-	 * Add activationZone
-	 *
-	 * @param TripShaper\StoreBundle\Document\Geolocation $activationZone
-	 */
-	public function addActivationZone(\TripShaper\StoreBundle\Document\Geolocation $activationZone)
-	{
-		$this->activationZone[] = $activationZone;
-	}
+    /**
+     * Set elevation
+     *
+     * @param float $elevation
+     */
+    public function setElevation($elevation)
+    {
+        $this->elevation = $elevation;
+    }
 
-	/**
-	 * Get activationZone
-	 *
-	 * @return Doctrine\Common\Collections\Collection $activationZone
-	 */
-	public function getActivationZone()
-	{
-		return $this->activationZone;
-	}
+    /**
+     * Get elevation
+     *
+     * @return float $elevation
+     */
+    public function getElevation()
+    {
+        return $this->elevation;
+    }
 
-	/**
-	 * Add atmosphereZone
-	 *
-	 * @param TripShaper\StoreBundle\Document\Geolocation $atmosphereZone
-	 */
-	public function addAtmosphereZone(\TripShaper\StoreBundle\Document\Geolocation $atmosphereZone)
-	{
-		$this->atmosphereZone[] = $atmosphereZone;
-	}
+    /**
+     * Set level
+     *
+     * @param int $level
+     */
+    public function setLevel($level)
+    {
+        $this->level = $level;
+    }
 
-	/**
-	 * Get atmosphereZone
-	 *
-	 * @return Doctrine\Common\Collections\Collection $atmosphereZone
-	 */
-	public function getAtmosphereZone()
-	{
-		return $this->atmosphereZone;
-	}
+    /**
+     * Get level
+     *
+     * @return int $level
+     */
+    public function getLevel()
+    {
+        return $this->level;
+    }
 
-	/**
-	 * Set shortDescription
-	 *
-	 * @param string $shortDescription
-	 */
-	public function setShortDescription($shortDescription)
-	{
-		$this->shortDescription = $shortDescription;
-	}
+    /**
+     * Add activationZone
+     *
+     * @param TripShaper\StoreBundle\Document\Geolocation $activationZone
+     */
+    public function addActivationZone(\TripShaper\StoreBundle\Document\Geolocation $activationZone)
+    {
+        $this->activationZone[] = $activationZone;
+    }
 
-	/**
-	 * Get shortDescription
-	 *
-	 * @return string $shortDescription
-	 */
-	public function getShortDescription()
-	{
-		return $this->shortDescription;
-	}
+    /**
+     * Get activationZone
+     *
+     * @return Doctrine\Common\Collections\Collection $activationZone
+     */
+    public function getActivationZone()
+    {
+        return $this->activationZone;
+    }
 
-	/**
-	 * Set icon
-	 *
-	 * @param file $icon
-	 */
-	public function setIcon($icon)
-	{
-		$this->icon = $icon;
-	}
+    /**
+     * Add atmosphereZone
+     *
+     * @param TripShaper\StoreBundle\Document\Geolocation $atmosphereZone
+     */
+    public function addAtmosphereZone(\TripShaper\StoreBundle\Document\Geolocation $atmosphereZone)
+    {
+        $this->atmosphereZone[] = $atmosphereZone;
+    }
 
-	/**
-	 * Get icon
-	 *
-	 * @return file $icon
-	 */
-	public function getIcon()
-	{
-		return $this->icon;
-	}
+    /**
+     * Get atmosphereZone
+     *
+     * @return Doctrine\Common\Collections\Collection $atmosphereZone
+     */
+    public function getAtmosphereZone()
+    {
+        return $this->atmosphereZone;
+    }
 
-	/**
-	 * Set thumbnail
-	 *
-	 * @param file $thumbnail
-	 */
-	public function setThumbnail($thumbnail)
-	{
-		$this->thumbnail = $thumbnail;
-	}
+    /**
+     * Add tags
+     *
+     * @param TripShaper\StoreBundle\Document\Tag $tags
+     */
+    public function addTags(\TripShaper\StoreBundle\Document\Tag $tags)
+    {
+        $this->tags[] = $tags;
+    }
 
-	/**
-	 * Get thumbnail
-	 *
-	 * @return file $thumbnail
-	 */
-	public function getThumbnail()
-	{
-		return $this->thumbnail;
-	}
-
-	/**
-	 * Set type
-	 *
-	 * @param string $type
-	 */
-	public function setType($type)
-	{
-		$this->type = $type;
-	}
-
-	/**
-	 * Get type
-	 *
-	 * @return string $type
-	 */
-	public function getType()
-	{
-		return $this->type;
-	}
-
-	/**
-	 * Set subtype
-	 *
-	 * @param string $subtype
-	 */
-	public function setSubtype($subtype)
-	{
-		$this->subtype = $subtype;
-	}
-
-	/**
-	 * Get subtype
-	 *
-	 * @return string $subtype
-	 */
-	public function getSubtype()
-	{
-		return $this->subtype;
-	}
-
-	/**
-	 * Set author
-	 *
-	 * @param string $author
-	 */
-	public function setAuthor($author)
-	{
-		$this->author = $author;
-	}
-
-	/**
-	 * Get author
-	 *
-	 * @return string $author
-	 */
-	public function getAuthor()
-	{
-		return $this->author;
-	}
+    /**
+     * Get tags
+     *
+     * @return Doctrine\Common\Collections\Collection $tags
+     */
+    public function getTags()
+    {
+        return $this->tags;
+    }
 }

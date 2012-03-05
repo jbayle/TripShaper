@@ -33,6 +33,7 @@ class AdminMenu
         $submenu->addChild('Places', array('route' => 'TripShaper_AdminBundle_Place_list'));
         $submenu->addChild('Resources', array('route' => 'TripShaper_AdminBundle_Resource_list'));
         $submenu->addChild('Paths', array('route' => 'TripShaper_AdminBundle_Path_list'));
+        $submenu->addChild('Tags', array('route' => 'TripShaper_AdminBundle_Tag_list'));
 
         return $menu;
     }

@@ -1,7 +1,12 @@
 
-_dashboard:
-    pattern:  /
-    defaults: { _controller: TripShaperAdminBundle:Place/List:index }
+_suggestTagsByTerme:
+    resource: "@TripShaperAdminBundle/Controller/Tag/"
+    type:     annotation
+
+TripShaperAdminBundle_admin_trip_shaper_admin_bundle_tag:
+    resource: "@TripShaperAdminBundle/Controller/Tag/"
+    type:     admingenerator
+    prefix:   /admin/tags
 
 TripShaperAdminBundle_admin_trip_shaper_admin_bundle_path:
     resource: "@TripShaperAdminBundle/Controller/Path/"
@@ -28,9 +33,9 @@ TripShaperAdminBundle_admin_trip_shaper_admin_bundle_trip:
     type:     admingenerator
     prefix:   /admin/trips
 
-hello:
-    pattern:      /store/show/{id}
-    defaults:     { _controller: TripShaperStoreBundle:Default:show }
+_dashboard:
+    pattern:  /
+    defaults: { _controller: TripShaperAdminBundle:Place/List:index }
 
 TripShaperStoreBundle:
     resource: "@TripShaperStoreBundle/Controller/"
