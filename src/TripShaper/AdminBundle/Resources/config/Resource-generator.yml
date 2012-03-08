@@ -8,8 +8,8 @@ params:
 builders:
   list:
     params:
-      title: List of Resources
-      display: ~
+      title: Resources
+      display: [ title, format ]
       actions:
         new: ~
       object_actions:
@@ -26,7 +26,7 @@ builders:
         list: ~
   edit:
     params:
-      title: You're editing the object "{{ Resource.title }}"
+      title: "{{ Resource.title }}"
       display: ~
       actions:
         list: ~

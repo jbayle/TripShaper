@@ -1,7 +1,5 @@
 {% extends_admingenerated "TripShaperAdminBundle:PlaceEdit:index.html.twig" %}
 
-{% form_theme form 'TripShaperAdminBundle::Form/collection_widget.html.twig' %}
-
 		{% block javascript_head %}
 			{{ parent() }}
 
@@ -22,13 +20,13 @@
 				$('a.add').click(function(event){
 	            	 var collectionHolder = $('#edit_place_titles');
 	                 var prototype = collectionHolder.attr('data-prototype');
-	                 form = prototype.replace(/\$\$name\$\$/g, collectionHolder.children().length);
+	                 form = prototype.replace(/__name__/g, collectionHolder.children().length);
 	                 collectionHolder.append(form);
 	                 event.preventDefault();
-	                 initRemove();
+	                 //initRemove();
 	            });
 
-
+				/*
 				var initRemove = function() {
 					$('a.remove').click(function(event){
 						$('#edit_place_titles div.form_row').last().remove();
@@ -36,6 +34,7 @@
 					});
 				}
 				initRemove();
+				*/
 
             });
 
@@ -46,6 +45,13 @@
         <fieldset class="form_block form_fieldset_Titles">
 			<legend>{% trans from "Admin" %}Titles{% endtrans %}</legend>
 			{{ form_widget(form['titles']) }}
+        </fieldset>
+        {% endblock %}
+
+         {% block form_fieldset_Geolocation %}
+        <fieldset class="form_block form_fieldset_Geolocation">
+			<legend>{% trans from "Admin" %}Geolocation{% endtrans %}</legend>
+			{{ form_widget(form['geolocation']) }}
         </fieldset>
         {% endblock %}
 

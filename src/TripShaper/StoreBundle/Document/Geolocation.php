@@ -5,7 +5,7 @@ namespace TripShaper\StoreBundle\Document;
 use Doctrine\ODM\MongoDB\Mapping\Annotations as MongoDB;
 
 /**
- * @MongoDB\Document
+ * @MongoDB\EmbeddedDocument
  */
 class Geolocation
 {
@@ -24,6 +24,10 @@ class Geolocation
 	 */
 	private $longitude;
 
+	// ------------------------- METHODS ------------------------------ //
+
+
+	// ----------------------- GENERATED ---------------------------- //
 
     /**
      * Get id

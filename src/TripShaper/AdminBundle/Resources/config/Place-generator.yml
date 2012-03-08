@@ -33,9 +33,10 @@ builders:
     params:
       title: New Place
       display: 
-        "NONE": [ id ]
+        "NONE": []
         "Titles": []
         "Descriptions": [ shortDescription, localDescription, marketingDescription  ]
+        "Geolocation": [ ]
         "Tags": []
       actions:
         list: ~
@@ -43,9 +44,10 @@ builders:
     params:
       title: "{{ Place.id }}"
       display: 
-        "NONE": [ id ]
+        "NONE": []
         "Titles": []
         "Descriptions": [ shortDescription, localDescription, marketingDescription  ]
+        "Geolocation": []
         "Tags": []
       actions:
         list: ~

@@ -71,6 +71,23 @@ class DefaultController extends Controller
 	}
 
 	/**
+	 * @Route("/store/show/place/{id}")
+	 * @Template()
+	 */
+	public function showPlaceAction($id)
+	{
+		$place = $this->get('doctrine.odm.mongodb.document_manager')
+		->getRepository('TripShaperStoreBundle:Place')
+		->find($id);
+
+		if (!$place) {
+			throw $this->createNotFoundException('No place found for id '.$id);
+		}
+
+		return new Response($place->getGeolocation()->getLatitude() . ' - ' . $place->getGeolocation()->getLongitude());
+	}
+
+	/**
 	 * @Route("/store/show")
 	 * @Template()
 	 */

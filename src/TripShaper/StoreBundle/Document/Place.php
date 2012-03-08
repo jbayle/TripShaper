@@ -62,7 +62,7 @@ class Place
 	/**
 	 * @MongoDB\EmbedOne(targetDocument="Geolocation", nullable="true")
 	 */
-	private $location;
+	private $geolocation;
 
 	/**
 	 * @MongoDB\Float(nullable="true")
@@ -75,14 +75,14 @@ class Place
 	private $level;
 
 	/**
-	 * @MongoDB\File
+	 * @MongoDB\String
 	 */
-	//private $icon;
+	private $icon;
 
 	/**
-	 * @MongoDB\File
+	 * @MongoDB\String
 	 */
-	//private $thumbnail;
+	private $thumbnail;
 
 	/**
 	 * @MongoDB\EmbedMany(targetDocument="Geolocation")
@@ -108,6 +108,16 @@ class Place
 	{
 		if ($this->getTitles()->count() == 0) return null;
 	 	return  $this->getTitles()->get(0)->getValue();
+	}
+
+	/**
+	 * Set titles
+	 *
+	 * @param array $titles
+	 */
+	public function setTitles(array $titles = array())
+	{
+		$this->titles = new \Doctrine\Common\Collections\ArrayCollection($titles);
 	}
 
 	// ----------------------- GENERATED ---------------------------- //
@@ -311,23 +321,23 @@ class Place
     }
 
     /**
-     * Set location
+     * Set geolocation
      *
-     * @param TripShaper\StoreBundle\Document\Geolocation $location
+     * @param TripShaper\StoreBundle\Document\Geolocation $geolocation
      */
-    public function setLocation(\TripShaper\StoreBundle\Document\Geolocation $location)
+    public function setGeolocation(\TripShaper\StoreBundle\Document\Geolocation $geolocation)
     {
-        $this->location = $location;
+        $this->geolocation = $geolocation;
     }
 
     /**
-     * Get location
+     * Get geolocation
      *
-     * @return TripShaper\StoreBundle\Document\Geolocation $location
+     * @return TripShaper\StoreBundle\Document\Geolocation $geolocation
      */
-    public function getLocation()
+    public function getGeolocation()
     {
-        return $this->location;
+        return $this->geolocation;
     }
 
     /**
@@ -428,5 +438,46 @@ class Place
     public function getTags()
     {
         return $this->tags;
+    }
+
+
+    /**
+     * Set icon
+     *
+     * @param string $icon
+     */
+    public function setIcon($icon)
+    {
+        $this->icon = $icon;
+    }
+
+    /**
+     * Get icon
+     *
+     * @return string $icon
+     */
+    public function getIcon()
+    {
+        return $this->icon;
+    }
+
+    /**
+     * Set thumbnail
+     *
+     * @param string $thumbnail
+     */
+    public function setThumbnail($thumbnail)
+    {
+        $this->thumbnail = $thumbnail;
+    }
+
+    /**
+     * Get thumbnail
+     *
+     * @return string $thumbnail
+     */
+    public function getThumbnail()
+    {
+        return $this->thumbnail;
     }
 }

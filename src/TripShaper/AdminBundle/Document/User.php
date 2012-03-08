@@ -6,12 +6,12 @@ use FOS\UserBundle\Document\User as BaseUser;
 use Doctrine\ODM\MongoDB\Mapping\Annotations as MongoDB;
 
 /**
- * @MongoDB\Document
+ * @MongoDB\Document(collection="users")
  */
 class User extends BaseUser
 {
     /**
-     * @MongoDB\Id(strategy="auto")
+     * @MongoDB\Id
      */
     protected $id;
 

@@ -5,9 +5,9 @@ namespace TripShaper\StoreBundle\Document;
 use Doctrine\ODM\MongoDB\Mapping\Annotations as MongoDB;
 
 /**
- * @MongoDB\EmbeddedDocument
+ * @MongoDB\Document(collection="assets")
  */
-class LocalizedString
+class Asset
 {
 	/**
 	 * @MongoDB\Id
@@ -22,7 +22,19 @@ class LocalizedString
 	/**
 	 * @MongoDB\String
 	 */
-	private $value;
+	private $format;
+
+	/**
+	 * @MongoDB\File
+	 */
+	private $file;
+
+	// ------------------------- METHODS ------------------------------ //
+
+	public function __toString()
+	{
+		return $this->getLanguage();
+	}
 
 	// ----------------------- GENERATED ---------------------------- //
 
@@ -58,22 +70,42 @@ class LocalizedString
     }
 
     /**
-     * Set value
+     * Set format
      *
-     * @param string $value
+     * @param string $format
      */
-    public function setValue($value)
+    public function setFormat($format)
     {
-        $this->value = $value;
+        $this->format = $format;
     }
 
     /**
-     * Get value
+     * Get format
      *
-     * @return string $value
+     * @return string $format
      */
-    public function getValue()
+    public function getFormat()
     {
-        return $this->value;
+        return $this->format;
+    }
+
+    /**
+     * Set file
+     *
+     * @param file $file
+     */
+    public function setFile($file)
+    {
+        $this->file = $file;
+    }
+
+    /**
+     * Get file
+     *
+     * @return file $file
+     */
+    public function getFile()
+    {
+        return $this->file;
     }
 }

@@ -4,6 +4,7 @@ namespace TripShaper\AdminBundle\Controller\Place;
 
 use Admingenerated\TripShaperAdminBundle\BasePlaceController\EditController as BaseEditController;
 use TripShaper\StoreBundle\Document\Tag;
+use TripShaper\StoreBundle\Document\LocalizedString;
 
 class EditController extends BaseEditController
 {
@@ -28,5 +29,20 @@ class EditController extends BaseEditController
 			}
 		}
 
+	}
+
+	protected function saveObject(\TripShaper\StoreBundle\Document\Place $Place)
+	{
+		$dm = $this->getDocumentManager();
+		$dm->persist($Place);
+		foreach($Place->getTags() as $tag)
+		{
+			$dm->persist($tag);
+		}
+		foreach($Place->getTitles() as $title)
+		{
+			$dm->persist($title);
+		}
+		$dm->flush();
 	}
 }

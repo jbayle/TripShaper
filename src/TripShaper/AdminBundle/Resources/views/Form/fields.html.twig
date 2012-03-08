@@ -1,0 +1,71 @@
+{% block field_row %}
+{% spaceless %}
+    <div class="form_row">
+		<div class="form_field">
+	        {{ form_label(form, label|default(null)) }}
+	        {{ form_errors(form) }}
+	        {{ form_widget(form) }}
+    	</div>
+	</div>
+{% endspaceless %}
+{% endblock field_row %}
+
+{% block collection_widget %}
+{% spaceless %}
+    <div class="collection">
+        {% if prototype is defined %}
+            {% set attr = attr|merge({'data-prototype': block('collection_item_widget') }) %}
+        {% endif %}
+        <div {{ block('widget_container_attributes') }}>
+            {{ form_errors(form) }}
+            {% for rows in form %}
+                <div class="form_row">
+                	<div class="form_field">
+	                {% set fieldNum = 1 %}
+	                {% for row in rows %}
+	                    <div class="field{{ fieldNum }}">
+	                    {{ form_label(row) }}
+	                    {{ form_widget(row, { 'attr': { 'class': 'test' }}) }}
+	                    </div>
+	                    {% set fieldNum = fieldNum + 1 %}
+	                {% endfor %}
+	                    <a class="remove" title="Remove" href="#">
+	                        <span>Delete</span>
+	                    </a>
+	                </div>
+	            </div>
+            {% endfor %}
+            {{ form_rest(form) }}
+        </div>
+        <div class="clear"></div>
+        <div>
+	        <a class="add" title="Add" href="#">
+	            <div style="display: none;"></div>
+	            <span>Add</span>
+	        </a>
+        </div>
+    </div>
+    <div class="clear"></div>
+{% endspaceless %}
+{% endblock collection_widget %}
+
+{% block collection_item_widget %}
+{% spaceless %}
+    <div class="form_row">
+		<div class="form_field">
+		    {% set fieldNum = 1 %}
+		    {% for row in prototype %}
+		        <div class="field{{ fieldNum }}">
+		        {{ form_label(row) }}
+		        {{ form_widget(row, { 'attr': { 'class': 'test' }}) }}
+		        </div>
+		        {% set fieldNum = fieldNum + 1 %}
+		    {% endfor %}
+		        <a class="remove" title="Remove" href="#">
+		            <span>Delete</span>
+		        </a>
+		        <div class="clear"></div>
+		</div>
+	</div>
+{% endspaceless %}
+{% endblock collection_item_widget %}

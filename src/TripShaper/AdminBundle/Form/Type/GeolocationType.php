@@ -5,24 +5,22 @@ namespace TripShaper\AdminBundle\Form\Type;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilder;
 
-class LocalizedStringType extends AbstractType
+class GeolocationType extends AbstractType
 {
 	public function buildForm(FormBuilder $builder, array $options)
 	{
 		$builder
-			->add('language')
-			->add('value');
+			->add('latitude', 'text')
+			->add('longitude', 'text');
 	}
 
 	public function getDefaultOptions(array $options)
 	{
-		return array(
-				'data_class' => 'TripShaper\StoreBundle\Document\LocalizedString',
-		);
+		return array('data_class' => 'TripShaper\StoreBundle\Document\Geolocation');
 	}
 
 	public function getName()
 	{
-		return 'localized_string';
+		return 'geolocation';
 	}
 }

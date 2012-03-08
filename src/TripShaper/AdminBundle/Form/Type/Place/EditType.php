@@ -5,6 +5,7 @@ namespace TripShaper\AdminBundle\Form\Type\Place;
 use Admingenerated\TripShaperAdminBundle\Form\BasePlaceType\EditType as BaseEditType;
 use Symfony\Component\Form\FormBuilder;
 use TripShaper\AdminBundle\Form\Type\LocalizedStringType;
+use TripShaper\AdminBundle\Form\Type\GeolocationType;
 
 class EditType extends BaseEditType
 {
@@ -19,8 +20,10 @@ class EditType extends BaseEditType
 			'allow_add' => true,
 			'allow_delete' => true,
 			'prototype' => true,
-			'by_reference' => false,
 		));
+
+		$builder->remove('geolocation');
+		$builder->add( 'geolocation', new GeolocationType());
 
 		$builder->remove('tags');
 
@@ -33,5 +36,12 @@ class EditType extends BaseEditType
 			'required' => false
 		));
 
+	}
+
+	public function getDefaultOptions(array $options)
+	{
+		return array(
+				'data_class' => 'TripShaper\StoreBundle\Document\Place',
+		);
 	}
 }

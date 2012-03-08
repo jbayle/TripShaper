@@ -30,6 +30,11 @@ class Resource
 	private $format;
 
 	/**
+	 * @MongoDB\ReferenceMany(targetDocument="Asset")
+	 */
+	private $assets;
+
+	/**
 	 * @MongoDB\String
 	 */
 	private $dimension;
@@ -65,63 +70,49 @@ class Resource
 	private $copyrights;
 
 	/**
-	 * @MongoDB\EmbedMany(targetDocument="Tag")
+	 * @MongoDB\ReferenceMany(targetDocument="Tag")
 	 */
 	private $tags = array();
 
-	/**
-	 * Get id
-	 *
-	 * @return id $id
-	 */
-	public function getId()
-	{
-		return $this->id;
-	}
+	// ------------------------- METHODS ------------------------------ //
 
-	/**
-	 * Set title
-	 *
-	 * @param string $title
-	 */
-	public function setTitle($title)
-	{
-		$this->title = $title;
-	}
+	// ----------------------- GENERATED ---------------------------- //
 
-	/**
-	 * Get title
-	 *
-	 * @return string $title
-	 */
-	public function getTitle()
-	{
-		return $this->title;
-	}
-	public function __construct()
-	{
-		$this->tags = new \Doctrine\Common\Collections\ArrayCollection();
-	}
+    public function __construct()
+    {
+        $this->assets = new \Doctrine\Common\Collections\ArrayCollection();
+        $this->tags = new \Doctrine\Common\Collections\ArrayCollection();
+    }
 
-	/**
-	 * Add tags
-	 *
-	 * @param TripShaper\StoreBundle\Document\Tag $tags
-	 */
-	public function addTags(\TripShaper\StoreBundle\Document\Tag $tags)
-	{
-		$this->tags[] = $tags;
-	}
+    /**
+     * Get id
+     *
+     * @return id $id
+     */
+    public function getId()
+    {
+        return $this->id;
+    }
 
-	/**
-	 * Get tags
-	 *
-	 * @return Doctrine\Common\Collections\Collection $tags
-	 */
-	public function getTags()
-	{
-		return $this->tags;
-	}
+    /**
+     * Set title
+     *
+     * @param string $title
+     */
+    public function setTitle($title)
+    {
+        $this->title = $title;
+    }
+
+    /**
+     * Get title
+     *
+     * @return string $title
+     */
+    public function getTitle()
+    {
+        return $this->title;
+    }
 
     /**
      * Set description
@@ -161,6 +152,26 @@ class Resource
     public function getFormat()
     {
         return $this->format;
+    }
+
+    /**
+     * Add assets
+     *
+     * @param TripShaper\StoreBundle\Document\Asset $assets
+     */
+    public function addAssets(\TripShaper\StoreBundle\Document\Asset $assets)
+    {
+        $this->assets[] = $assets;
+    }
+
+    /**
+     * Get assets
+     *
+     * @return Doctrine\Common\Collections\Collection $assets
+     */
+    public function getAssets()
+    {
+        return $this->assets;
     }
 
     /**
@@ -301,5 +312,25 @@ class Resource
     public function getCopyrights()
     {
         return $this->copyrights;
+    }
+
+    /**
+     * Add tags
+     *
+     * @param TripShaper\StoreBundle\Document\Tag $tags
+     */
+    public function addTags(\TripShaper\StoreBundle\Document\Tag $tags)
+    {
+        $this->tags[] = $tags;
+    }
+
+    /**
+     * Get tags
+     *
+     * @return Doctrine\Common\Collections\Collection $tags
+     */
+    public function getTags()
+    {
+        return $this->tags;
     }
 }
