@@ -40,7 +40,7 @@ doctrine_mongodb:
             server: mongodb://localhost:27017
             options:
                 connect: true
-    default_database: test
+    default_database: tripshaper_%kernel.environment%
     document_managers:
         default:
             auto_mapping: true
@@ -108,5 +108,9 @@ fos_user:
     user_class:  TripShaper\AdminBundle\Document\User 
     db_driver: mongodb
     firewall_name: main
-            
-    
+
+# Twig            
+twig:
+    form:
+        resources:
+            - 'TripShaperAdminBundle:Form:fields.html.twig'

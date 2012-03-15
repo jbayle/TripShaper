@@ -37,7 +37,6 @@
 
 [assetic]
     git=git://github.com/kriswallsmith/assetic.git
-    version=v1.0.2
 
 [twig-extensions]
     git=git://github.com/fabpot/Twig-extensions.git

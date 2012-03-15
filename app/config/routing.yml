@@ -37,6 +37,11 @@ _dashboard:
     pattern:  /
     defaults: { _controller: TripShaperAdminBundle:Place/List:index }
 
+TripShaperAdminBundle:
+    resource: "@TripShaperAdminBundle/Controller/"
+    type:     annotation
+    prefix:   /
+
 TripShaperStoreBundle:
     resource: "@TripShaperStoreBundle/Controller/"
     type:     annotation
