@@ -10,7 +10,7 @@ class PlaceType extends AbstractType
 {
     public function buildForm(FormBuilder $builder, array $options)
     {
-        $builder->add('title');
+        $builder->add('shortDescription');
 
         $builder->add('geolocation', new GeolocationType());
 
@@ -18,15 +18,13 @@ class PlaceType extends AbstractType
 
     public function getName()
     {
-        return 'test_place';
+        return 'place';
     }
-
+/*
     public function getDefaultOptions(array $options)
     {
-    	return array(
-    			'data_class' => 'TripShaper\StoreBundle\Document\Place',
-    	);
-    }
+    	return array('data_class' => 'TripShaper\StoreBundle\Document\Place');
+    }*/
 
 }
 

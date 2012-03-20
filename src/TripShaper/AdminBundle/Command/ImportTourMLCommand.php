@@ -38,37 +38,53 @@ class ImportTourMLCommand extends ContainerAwareCommand
 	    $this->document = new \DOMDocument('1.0', 'UTF-8');
 	    if (false === $this->document->load($file)) throw new \Exception('Error in XML');
 
+	    if (count($this->document->getElementsByTagName('Tour')) != 1) throw new \Exception('A TourML file must contain a single tour object');
+
 	    $path_parts = pathinfo(realpath($file));
 	    $this->directory = $path_parts['dirname'];
 
 	    $this->dm = $this->getContainer()->get('doctrine.odm.mongodb.document_manager');
 
-	    $nodes = $this->document->getElementsByTagName('Stop');
-	    foreach($nodes as $node)
-			$this->persistStop($node);
+	    // TODO : Remove this lines when the import gains stability
+		$this->dm->createQueryBuilder('TripShaperStoreBundle:Trip')->remove()->getQuery()->execute();
+		$this->dm->createQueryBuilder('TripShaperStoreBundle:Place')->remove()->getQuery()->execute();
+		$this->dm->createQueryBuilder('TripShaperStoreBundle:Resource')->remove()->getQuery()->execute();
+		$this->dm->createQueryBuilder('TripShaperStoreBundle:Asset')->remove()->getQuery()->execute();
 
+		// Trip / Tour
+		$trip = new Trip();
+		$trip->setTitles($this->getLocalizedProperty("/tourml:Tour/tourml:Title"));
+
+		// Places
+		$xpath = new \DOMXPath($this->document);
+		$entries = $xpath->query("/tourml:Tour/tourml:Stop[@tourml:view='StopGroup']");
+		foreach($entries as $entry) {
+			$trip->addPlaces($this->persistPlace($entry));
+		}
 	    $this->dm->flush();
 
+	    // Add each Place's Resource as Trip's global Resource
+		$places = $this->dm->createQueryBuilder('TripShaperStoreBundle:Place')->find()->getQuery()->execute();
+		foreach ($places as $place) {
+			$resources = $place->getResources();
+			foreach ($resources as $resource) {
+				$trip->addResources($resource);
+			}
+		}
+
+		$this->dm->persist($trip);
+		$this->dm->flush();
     }
 
-	private function persistStop(\DomElement $element)
-	{
-		if (!$element->hasAttribute('tourml:view'))
-			return;
-
-		if ('StopGroup' == $element->getAttribute('tourml:view'))
-			return $this->persistPlace($element);
-
-		if (('AudioStop' == $element->getAttribute('tourml:view')) ||
-			('ImageStop' == $element->getAttribute('tourml:view')))
-			return $this->persistResource($element);
-	}
-
+    /**
+     * Persist a Place in the Document Manager
+     * @param element DOM Element
+     * @return Place object
+     */
 	private function persistPlace(\DomElement $element)
 	{
 		$place = new Place();
-
-    	$place->setTitles($this->getLocalizedProperty($element, 'Title'));
+    	$place->setTitles($this->getLocalizedProperty("/tourml:Tour/tourml:Stop[@tourml:id='{$element->getAttribute('tourml:id')}']/tourml:Title"));
 
     	$geolocation = new Geolocation();
     	$props = $element->getElementsByTagName('PropertySet');
@@ -85,9 +101,26 @@ class ImportTourMLCommand extends ContainerAwareCommand
     	}
     	$place->setGeolocation($geolocation);
 
+    	// Resources
+    	$nodes = $element->getElementsByTagName('StopRef');
+    	foreach ($nodes as $node) {
+    		$xpath = new \DOMXPath($this->document);
+			$entries = $xpath->query("/tourml:Tour/tourml:Stop[@tourml:id='{$node->getAttribute('tourml:id')}']");
+			if ($entries->length == 1)
+			{
+				$place->addResources($this->persistResource($entries->item(0)));
+			}
+    	}
+
     	$this->dm->persist($place);
+    	return $place;
 	}
 
+	/**
+	 * Persist a Resource in the Document Manager
+	 * @param element DOM Element
+	 * @return Resource object
+	 */
 	private function persistResource(\DomElement $element)
 	{
 		$resource = new Resource();
@@ -108,22 +141,34 @@ class ImportTourMLCommand extends ContainerAwareCommand
 		}
 
 		$this->dm->persist($resource);
+		return $resource;
 	}
 
-	private function getLocalizedProperty(\DomElement $element, $tagName)
+	/**
+	 * Find all the localized nodes for the required property
+	 * @param query XPath query to find the nodes
+	 * @return array of LocalizedString object
+	 */
+	private function getLocalizedProperty($query)
 	{
 		$localizedStrings = array();
-		$nodes = $element->getElementsByTagName($tagName);
-		foreach($nodes as $node)
+		$xpath = new \DOMXPath($this->document);
+		$entries = $xpath->query($query);
+		foreach($entries as $entry)
 		{
 			$localizedString = new LocalizedString();
-			$localizedString->setLanguage($node->getAttribute('xml:lang'));
-			$localizedString->setValue(trim($node->nodeValue));
+			$localizedString->setLanguage($entry->getAttribute('xml:lang'));
+			$localizedString->setValue(trim($entry->nodeValue));
 			$localizedStrings[] = $localizedString;
 		}
 		return $localizedStrings;
 	}
 
+	/**
+	 * Find asset by id
+	 * @param id Unique id of the asset to find
+	 * @return Asset object
+	 */
 	private function getAsset($id)
 	{
 		$xpath = new \DOMXPath($this->document);

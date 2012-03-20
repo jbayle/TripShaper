@@ -1,1 +1,8 @@
 {% extends_admingenerated "TripShaperAdminBundle:TripEdit:index.html.twig" %}
+
+        {% block form_fieldset_Titles %}
+        <fieldset class="form_block form_fieldset_Titles">
+			<legend>{% trans from "Admin" %}Titles{% endtrans %}</legend>
+			{{ form_widget(form['titles']) }}
+        </fieldset>
+        {% endblock %}

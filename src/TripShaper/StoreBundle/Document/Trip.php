@@ -7,50 +7,65 @@ use Doctrine\ODM\MongoDB\Mapping\Annotations as MongoDB;
 /**
  * @MongoDB\Document(collection="trips")
  */
-class Trip
+class Trip extends Common\Document
 {
 	/**
 	 * @MongoDB\Id
 	 */
-	private $id;
+	protected $id;
 
 	/**
 	 * @MongoDB\EmbedMany(targetDocument="LocalizedString")
 	 */
-	private $titles;
+	protected $titles;
 
 	/**
 	 * @MongoDB\String
 	 */
-	private $description;
+	protected $description;
 
 	/**
 	 * @MongoDB\File
 	 */
-	//private $icon;
+	//protected $icon;
 
 	/**
 	 * @MongoDB\File
 	 */
-	//private $splash;
+	//protected $splash;
 
 	/**
 	 * @MongoDB\Date
 	 */
-	private $date;
+	protected $date;
 
 	/**
 	 * @MongoDB\EmbedMany(targetDocument="Comment")
 	 */
-	private $comments = array();
+	protected $comments = array();
+
+	/**
+	 * @MongoDB\ReferenceMany(targetDocument="Place")
+	 */
+	protected $places = array();
+
+	/**
+	 * @MongoDB\ReferenceMany(targetDocument="Resource")
+	 */
+	protected $resources = array();
+
+	// ------------------------- METHODS ------------------------------ //
 
 	// ----------------------- GENERATED ---------------------------- //
 
     public function __construct()
     {
+        $this->titles = new \Doctrine\Common\Collections\ArrayCollection();
         $this->comments = new \Doctrine\Common\Collections\ArrayCollection();
+        $this->places = new \Doctrine\Common\Collections\ArrayCollection();
+        $this->resources = new \Doctrine\Common\Collections\ArrayCollection();
     }
-
+    
     /**
      * Get id
      *
@@ -62,23 +77,23 @@ class Trip
     }
 
     /**
-     * Set title
+     * Add titles
      *
-     * @param TripShaper\StoreBundle\Document\LocalizedString $title
+     * @param TripShaper\StoreBundle\Document\LocalizedString $titles
      */
-    public function setTitle(\TripShaper\StoreBundle\Document\LocalizedString $title)
+    public function addTitles(\TripShaper\StoreBundle\Document\LocalizedString $titles)
     {
-        $this->title = $title;
+        $this->titles[] = $titles;
     }
 
     /**
-     * Get title
+     * Get titles
      *
-     * @return TripShaper\StoreBundle\Document\LocalizedString $title
+     * @return Doctrine\Common\Collections\Collection $titles
      */
-    public function getTitle()
+    public function getTitles()
     {
-        return $this->title;
+        return $this->titles;
     }
 
     /**
@@ -142,22 +157,42 @@ class Trip
     }
 
     /**
-     * Add titles
+     * Add places
      *
-     * @param TripShaper\StoreBundle\Document\LocalizedString $titles
+     * @param TripShaper\StoreBundle\Document\Place $places
      */
-    public function addTitles(\TripShaper\StoreBundle\Document\LocalizedString $titles)
+    public function addPlaces(\TripShaper\StoreBundle\Document\Place $places)
     {
-        $this->titles[] = $titles;
+        $this->places[] = $places;
     }
 
     /**
-     * Get titles
+     * Get places
      *
-     * @return Doctrine\Common\Collections\Collection $titles
+     * @return Doctrine\Common\Collections\Collection $places
      */
-    public function getTitles()
+    public function getPlaces()
     {
-        return $this->titles;
+        return $this->places;
+    }
+
+    /**
+     * Add resources
+     *
+     * @param TripShaper\StoreBundle\Document\Resource $resources
+     */
+    public function addResources(\TripShaper\StoreBundle\Document\Resource $resources)
+    {
+        $this->resources[] = $resources;
+    }
+
+    /**
+     * Get resources
+     *
+     * @return Doctrine\Common\Collections\Collection $resources
+     */
+    public function getResources()
+    {
+        return $this->resources;
     }
 }

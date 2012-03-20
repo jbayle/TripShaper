@@ -7,118 +7,104 @@ use Doctrine\ODM\MongoDB\Mapping\Annotations as MongoDB;
 /**
  * @MongoDB\Document(collection="places")
  */
-class Place
+class Place extends Common\Document
 {
 	/**
 	 * @MongoDB\Id
 	 */
-	private $id;
+	protected $id;
 
 	/**
 	 * @MongoDB\Boolean
 	 */
-	private $isPublished;
+	protected $isPublished;
 
 	/**
 	 * @MongoDB\Boolean
 	 */
-	private $isConnector;
+	protected $isConnector;
 
 	/**
 	 * @MongoDB\EmbedMany(targetDocument="LocalizedString")
 	 */
-	private $titles;
+	protected $titles;
 
 	/**
 	 * @MongoDB\String(nullable="true")
 	 */
-	private $shortDescription;
+	protected $shortDescription;
 
 	/**
 	 * @MongoDB\String(nullable="true")
 	 */
-	private $localDescription;
+	protected $localDescription;
 
 	/**
 	 * @MongoDB\String(nullable="true")
 	 */
-	private $marketingDescription;
+	protected $marketingDescription;
 
 	/**
 	 * @MongoDB\String
 	 */
-	private $type;
+	protected $type;
 
 	/**
 	 * @MongoDB\String
 	 */
-	private $subtype;
+	protected $subtype;
 
 	/**
 	 * @MongoDB\String(nullable="true")
 	 */
-	private $author;
+	protected $author;
 
 	/**
 	 * @MongoDB\EmbedOne(targetDocument="Geolocation", nullable="true")
 	 */
-	private $geolocation;
+	protected $geolocation;
 
 	/**
 	 * @MongoDB\Float(nullable="true")
 	 */
-	private $elevation;
+	protected $elevation;
 
 	/**
 	 * @MongoDB\Int
 	 */
-	private $level;
+	protected $level;
 
 	/**
 	 * @MongoDB\String
 	 */
-	private $icon;
+	protected $icon;
 
 	/**
 	 * @MongoDB\String
 	 */
-	private $thumbnail;
+	protected $thumbnail;
 
 	/**
 	 * @MongoDB\EmbedMany(targetDocument="Geolocation")
 	 */
-	private $activationZone = array();
+	protected $activationZone = array();
 
 	/**
 	 * @MongoDB\EmbedMany(targetDocument="Geolocation")
 	 */
-	private $atmosphereZone = array();
+	protected $atmosphereZone = array();
 
 	/**
 	 * @MongoDB\EmbedMany(targetDocument="Tag")
 	 */
-	private $tags = array();
+	protected $tags = array();
+
+	/**
+	 * @MongoDB\ReferenceMany(targetDocument="Resource")
+	 */
+	protected $resources = array();
 
 	// ------------------------- METHODS ------------------------------ //
-
-	/**
-	 * Get default title
-	 */
-	public function getDefaultTitle()
-	{
-		if ($this->getTitles()->count() == 0) return null;
-	 	return  $this->getTitles()->get(0)->getValue();
-	}
-
-	/**
-	 * Set titles
-	 *
-	 * @param array $titles
-	 */
-	public function setTitles(array $titles = array())
-	{
-		$this->titles = new \Doctrine\Common\Collections\ArrayCollection($titles);
-	}
 
 	// ----------------------- GENERATED ---------------------------- //
 
@@ -128,8 +114,9 @@ class Place
         $this->activationZone = new \Doctrine\Common\Collections\ArrayCollection();
         $this->atmosphereZone = new \Doctrine\Common\Collections\ArrayCollection();
         $this->tags = new \Doctrine\Common\Collections\ArrayCollection();
+        $this->resources = new \Doctrine\Common\Collections\ArrayCollection();
     }
-
+    
     /**
      * Get id
      *
@@ -381,6 +368,46 @@ class Place
     }
 
     /**
+     * Set icon
+     *
+     * @param string $icon
+     */
+    public function setIcon($icon)
+    {
+        $this->icon = $icon;
+    }
+
+    /**
+     * Get icon
+     *
+     * @return string $icon
+     */
+    public function getIcon()
+    {
+        return $this->icon;
+    }
+
+    /**
+     * Set thumbnail
+     *
+     * @param string $thumbnail
+     */
+    public function setThumbnail($thumbnail)
+    {
+        $this->thumbnail = $thumbnail;
+    }
+
+    /**
+     * Get thumbnail
+     *
+     * @return string $thumbnail
+     */
+    public function getThumbnail()
+    {
+        return $this->thumbnail;
+    }
+
+    /**
      * Add activationZone
      *
      * @param TripShaper\StoreBundle\Document\Geolocation $activationZone
@@ -440,44 +467,23 @@ class Place
         return $this->tags;
     }
 
-
     /**
-     * Set icon
+     * Add resources
      *
-     * @param string $icon
+     * @param TripShaper\StoreBundle\Document\Resource $resources
      */
-    public function setIcon($icon)
+    public function addResources(\TripShaper\StoreBundle\Document\Resource $resources)
     {
-        $this->icon = $icon;
+        $this->resources[] = $resources;
     }
 
     /**
-     * Get icon
+     * Get resources
      *
-     * @return string $icon
+     * @return Doctrine\Common\Collections\Collection $resources
      */
-    public function getIcon()
+    public function getResources()
     {
-        return $this->icon;
-    }
-
-    /**
-     * Set thumbnail
-     *
-     * @param string $thumbnail
-     */
-    public function setThumbnail($thumbnail)
-    {
-        $this->thumbnail = $thumbnail;
-    }
-
-    /**
-     * Get thumbnail
-     *
-     * @return string $thumbnail
-     */
-    public function getThumbnail()
-    {
-        return $this->thumbnail;
+        return $this->resources;
     }
 }

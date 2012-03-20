@@ -15,9 +15,9 @@ class GeolocationType extends AbstractType
 	}
 
 	public function getDefaultOptions(array $options)
-	{
-		return array('data_class' => 'TripShaper\StoreBundle\Document\Geolocation');
-	}
+    {
+        return array('data_class' => 'TripShaper\StoreBundle\Document\Geolocation');
+    }
 
 	public function getName()
 	{

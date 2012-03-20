@@ -3,13 +3,16 @@ params:
   model: TripShaper\StoreBundle\Document\Trip
   namespace_prefix: TripShaper
   bundle_name: AdminBundle
-  fields: ~
+  fields:
+    title:
+        getter: DefaultTitle
 
 builders:
   list:
     params:
-      title: List of Trips
-      display: ~
+      title: Trips
+      display:
+        display: [ title ]
       actions:
         new: ~
       object_actions:
@@ -20,14 +23,15 @@ builders:
       display: ~
   new:
     params:
-      title: New object for AdminBundle
+      title: New Trip
       display: ~
       actions:
         list: ~
   edit:
     params:
-      title: You're editing the object "{{ Trip.title }}"
-      display: ~
+      title: "{{ Trip.id }}"
+      display:
+        "Titles": []
       actions:
         list: ~
   delete: ~
