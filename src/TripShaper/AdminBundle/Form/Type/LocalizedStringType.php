@@ -16,9 +16,7 @@ class LocalizedStringType extends AbstractType
 
 	public function getDefaultOptions(array $options)
 	{
-		return array(
-				'data_class' => 'TripShaper\StoreBundle\Document\LocalizedString',
-		);
+		return array('data_class' => 'TripShaper\StoreBundle\Document\LocalizedString');
 	}
 
 	public function getName()

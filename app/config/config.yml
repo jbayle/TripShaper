@@ -105,7 +105,7 @@ admingenerator_user:
 fos_user:
     service:
         mailer: fos_user.mailer.noop
-    user_class:  TripShaper\AdminBundle\Document\User1
+    user_class:  TripShaper\AdminBundle\Document\User
     db_driver: mongodb
     firewall_name: main
 

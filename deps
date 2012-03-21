@@ -24,7 +24,8 @@
 [DoctrineMongoDBBundle]
     git=git://github.com/doctrine/DoctrineMongoDBBundle.git
     target=/bundles/Doctrine/Bundle/MongoDBBundle
-
+	version=origin/2.0
+	
 [doctrine-mongodb-odm]
     git=git://github.com/doctrine/mongodb-odm.git
 

@@ -27,7 +27,7 @@ class Place extends Common\Document
 	/**
 	 * @MongoDB\EmbedMany(targetDocument="LocalizedString")
 	 */
-	protected $titles;
+	protected $titles = array();
 
 	/**
 	 * @MongoDB\String(nullable="true")
@@ -115,8 +115,11 @@ class Place extends Common\Document
         $this->atmosphereZone = new \Doctrine\Common\Collections\ArrayCollection();
         $this->tags = new \Doctrine\Common\Collections\ArrayCollection();
         $this->resources = new \Doctrine\Common\Collections\ArrayCollection();
+
+        $this->geolocation = new Geolocation();
+        $this->titles[] = new LocalizedString();
     }
-    
+
     /**
      * Get id
      *

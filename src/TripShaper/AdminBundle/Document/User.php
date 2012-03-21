@@ -2,55 +2,33 @@
 
 namespace TripShaper\AdminBundle\Document;
 
+use FOS\UserBundle\Document\User as BaseUser;
 use Doctrine\ODM\MongoDB\Mapping\Annotations as MongoDB;
-use Symfony\Component\Validator\Constraints as Assert;
 
 /**
  * @MongoDB\Document(collection="users")
  */
-class User
+class User extends BaseUser
 {
-	/**
-	 * @MongoDB\Id
-	 */
-	protected $id;
+    /**
+     * @MongoDB\Id
+     */
+    protected $id;
 
-	/**
-	 * @MongoDB\Field(type="string")
-	 * @Assert\NotBlank()
-	 * @Assert\Email()
-	 */
-	protected $email;
+    public function __construct()
+    {
+        parent::__construct();
+        // your own logic
+    }
 
-	/**
-	 * @MongoDB\Field(type="string")
-	 * @Assert\NotBlank()
-	 */
-	protected $password;
 
-	public function getId()
-	{
-		return $this->id;
-	}
-
-	public function getEmail()
-	{
-		return $this->email;
-	}
-
-	public function setEmail($email)
-	{
-		$this->email = $email;
-	}
-
-	public function getPassword()
-	{
-		return $this->password;
-	}
-
-	// stupid simple encryption (please don't copy it!)
-	public function setPassword($password)
-	{
-		$this->password = sha1($password);
-	}
+    /**
+     * Get id
+     *
+     * @return id $id
+     */
+    public function getId()
+    {
+        return $this->id;
+    }
 }

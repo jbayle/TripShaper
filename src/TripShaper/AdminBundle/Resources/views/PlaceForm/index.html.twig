@@ -1,0 +1,155 @@
+{% extends "TripShaperAdminBundle::base_admin_assetic_less.html.twig" %}
+
+{% block javascript_head %}
+	{{ parent() }}
+
+            <script type="text/javascript">
+
+            $(function() {
+				$('#group_tags').tagit({
+					minLength: 2,
+					initialTags: $('#form_place_group').val().split(','),
+					tagSource: "{{ path('_suggestTagsByTerm') }}",
+					tagsChanged: function(tagValue, action, element) {
+						$('#form_place_group').val(
+							$.map($('#group_tags').tagit('tags'), function(elem) { return elem.value; })
+						);
+					}
+				});
+
+				$('a.add').click(function(event){
+	            	 var collectionHolder = $('#form_place_titles');
+	                 var prototype = collectionHolder.attr('data-prototype');
+	                 form = prototype.replace(/__name__/g, collectionHolder.children().length);
+	                 collectionHolder.append(form);
+	                 event.preventDefault();
+	                 //initRemove();
+	            });
+
+				/*
+				var initRemove = function() {
+					$('a.remove').click(function(event){
+						$('#edit_place_titles div.form_row').last().remove();
+					    event.preventDefault();
+					});
+				}
+				initRemove();
+				*/
+
+            });
+
+            </script>
+{% endblock %}
+
+{% block body %}
+    {% block page_title %}
+        <head>
+            <h1>
+             {% if Place.id %}
+    			{{ Place.getDefaultTitle() }}
+	        {% else %}
+            	New Place
+        	{% endif %}
+        	</h1>
+        </head>
+    {% endblock %}
+
+    {% block form %}
+    <form
+        {% if Place.id %}
+            action="{{ path("TripShaper_AdminBundle_Place_update", { 'id': Place.id }) }}"
+        {% else %}
+            action="{{ path("TripShaper_AdminBundle_Place_create") }}"
+        {% endif %}
+        method="post" {{ form_enctype(form) }}>
+
+        {{ form_errors(form) }}
+
+        {% block form_fieldset_NONE %}
+        <fieldset class="form_block form_fieldset_NONE">
+        </fieldset>
+        {% endblock %}
+
+        {% block form_fieldset_Titles %}
+        <fieldset class="form_block form_fieldset_Titles">
+			<legend>{% trans from "Admin" %}Titles{% endtrans %}</legend>
+			{{ form_widget(form['titles']) }}
+        </fieldset>
+        {% endblock %}
+
+        {% block form_fieldset_Descriptions %}
+        <fieldset class="form_block form_fieldset_Descriptions">
+                <legend>{% trans from "Admin" %}Descriptions{% endtrans %}</legend>
+            <div class="form_row">
+                                                <div class="form_field">
+                    {% block form_shortDescription %}
+                        {{ form_label(form['shortDescription'], 'Short description') }}
+
+                        {{ form_widget(form['shortDescription']) }}{{ form_errors(form['shortDescription']) }}
+                    {% endblock %}
+                </div>
+                                </div>
+            <div class="form_row">
+                                                <div class="form_field">
+                    {% block form_localDescription %}
+                        {{ form_label(form['localDescription'], 'Local description') }}
+
+                        {{ form_widget(form['localDescription']) }}{{ form_errors(form['localDescription']) }}
+                    {% endblock %}
+                </div>
+                                </div>
+            <div class="form_row">
+                                                <div class="form_field">
+                    {% block form_marketingDescription %}
+                        {{ form_label(form['marketingDescription'], 'Marketing description') }}
+
+                        {{ form_widget(form['marketingDescription']) }}{{ form_errors(form['marketingDescription']) }}
+                    {% endblock %}
+                </div>
+                                </div>
+        </fieldset>
+        {% endblock %}
+
+        {% block form_fieldset_Geolocation %}
+        <fieldset class="form_block form_fieldset_Geolocation">
+			<legend>{% trans from "Admin" %}Geolocation{% endtrans %}</legend>
+			{{ form_widget(form['geolocation']) }}
+        </fieldset>
+        {% endblock %}
+
+ 		{% block form_fieldset_Tags %}
+        <fieldset class="form_block form_fieldset_Tags">
+			<legend>{% trans from "Admin" %}Tags{% endtrans %}</legend>
+
+			<div class="form_row">
+				<div class="form_field">
+                        <label for="group_tags">Group</label>
+                        {{ form_widget(form['group']) }}
+                        <div>
+							<ul id="group_tags"></ul>
+						</div>
+                </div>
+			</div>
+
+        </fieldset>
+        {% endblock %}
+
+        <ul class="actions">
+            <li>
+                 {{ form_rest(form) }}
+                 <input type="submit" class="submit_button" value="{% trans from "Admingenerator" %}form.btn_save{% endtrans %}" />
+            </li>
+        </ul>
+
+        {% block form_actions %}
+         <ul class="form_actions actions">
+
+         <li><a class="list" href="{{ path("TripShaper_AdminBundle_Place_list") }}">{% trans from "Admingenerator" %}List{% endtrans %}</a></li>
+
+
+        </ul>
+        {% endblock %}
+
+    </form>
+    {% endblock %}
+{% endblock %}

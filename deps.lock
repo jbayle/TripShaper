@@ -1,7 +1,7 @@
 symfony b5d027218b67eacfa878c43ff6923b2fff49668e
 twig f1186c3832abd4f83b6c58ee671bad368b6a12f4
 monolog 1.0.2
-doctrine-common ad2a3385ec88ae4f1c7456aa07a926e6376f219a
+doctrine-common 2.2.0
 doctrine-dbal 220a5b0a05214d19dceea01e648d1413bba243c3
 doctrine 44d7d23e8d2e9e4c72a7c7bf0b7bb051d31a7207
 DoctrineMongoDBBundle 8bd687596140b737f5df53be3ec150237103d7d9
