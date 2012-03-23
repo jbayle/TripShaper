@@ -28,6 +28,7 @@ class AdminMenu
 
         $submenu = $menu->addChild('Menu', array('uri' => '#'));
         $submenu->setLinkAttributes(array('class'=>'sub main'));
+        $submenu->addChild('Prepare Your Visit', array('route' => 'TripShaper_VisitPrepareBundle_VisitPrepare_list'));
         $submenu->addChild('Trips', array('route' => 'TripShaper_AdminBundle_Trip_list'));
         $submenu->addChild('Maps', array('route' => 'TripShaper_AdminBundle_Map_list'));
         $submenu->addChild('Places', array('route' => 'TripShaper_AdminBundle_Place_list'));

@@ -1,3 +1,7 @@
+TripShaperVisitPrepareBundle_admin_trip_shaper_admin_visit_prepare:
+    resource: "@TripShaperVisitPrepareBundle/Controller/VisitPrepare/"
+    type:     admingenerator
+    prefix:   /admin/visitPrepare
 
 _suggestTagsByTerme:
     resource: "@TripShaperAdminBundle/Controller/Tag/"

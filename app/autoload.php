@@ -38,8 +38,13 @@ $loader->registerPrefixes(array(
 if (!function_exists('intl_get_error_code')) {
     require_once __DIR__.'/../vendor/symfony/src/Symfony/Component/Locale/Resources/stubs/functions.php';
 
-    $loader->registerPrefixFallbacks(array(__DIR__.'/../vendor/symfony/src/Symfony/Component/Locale/Resources/stubs'));
+    $loader->registerPrefixFallbacks(__DIR__.'/../vendor/symfony/src/Symfony/Component/Locale/Resources/stubs');
 }
+
+if (!interface_exists('SessionHandlerInterface')) {
+  $loader->registerPrefix('SessionHandlerInterface', __DIR__.'/../vendor/symfony/src/Symfony/Component/HttpFoundation/Resources/stubs');
+}
+
 
 $loader->registerNamespaceFallbacks(array(
     __DIR__.'/../src',
