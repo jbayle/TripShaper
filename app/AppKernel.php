@@ -41,6 +41,7 @@ class AppKernel extends Kernel
             new TripShaper\DataImporterBundle\TripShaperDataImporterBundle(),
             new TripShaper\StoreBundle\TripShaperStoreBundle(),
             new TripShaper\AdminBundle\TripShaperAdminBundle(),
+            new TripShaper\VisitPrepareBundle\TripShaperVisitPrepareBundle(),
         );
 
         if (in_array($this->getEnvironment(), array('dev', 'test'))) {

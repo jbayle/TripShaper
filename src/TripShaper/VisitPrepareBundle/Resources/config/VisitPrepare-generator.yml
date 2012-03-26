@@ -1,0 +1,33 @@
+generator: admingenerator.generator.doctrine_odm
+params:
+  model: TripShaper\VisitPrepareBundle\Document\Visit
+  namespace_prefix: TripShaper
+  bundle_name: VisitPrepareBundle
+  fields: ~
+
+builders:
+  list:
+    params:
+      title: List of Visits
+      display: ~
+      actions:
+        new: ~
+      object_actions:
+        edit: ~
+        delete: ~
+  filters:
+    params:
+      display: ~
+  new:
+    params:
+      title: New Visit
+      display: ~
+      actions:
+        list: ~
+  edit:
+    params:
+      title: You're editing the object "{{ Visit.title }}"
+      display: ~
+      actions:
+        list: ~
+  delete: ~
